@@ -1,5 +1,5 @@
 module.exports = app => {
-  app.use("/", (req, res) => {
+  app.use("/test", (req, res) => {
     res.send({ message: "This is still in development" });
   });
 };
