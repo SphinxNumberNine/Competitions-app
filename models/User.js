@@ -22,7 +22,7 @@ var userSchema = new Schema({
   password: {
     type: String,
     required: true
-  },
+  }
 });
 
 userSchema.pre("save", function(next) {
@@ -35,6 +35,26 @@ userSchema.pre("save", function(next) {
     next();
   });
 });
+
+userSchema.statics.authenticate = function(email, password, callback) {
+  User.findOne({ email }).exec(function(err, user) {
+    if (err) {
+      return callback(err);
+    } else if (!user) {
+      var error = new Error("User not found.");
+      error.status = 401;
+      return callback(err);
+    }
+
+    bcrypt.compare(password, user.password, function(err, result) {
+      if (result === true) {
+        return callback(null, user);
+      } else {
+        return callback();
+      }
+    });
+  });
+};
 
 var User = mongoose.model("users", userSchema);
 module.exports = User;
