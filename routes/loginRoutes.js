@@ -48,6 +48,18 @@ module.exports = app => {
     }
   });
 
+  app.get("/api/logout", async (req, res, next) => {
+    if(req.session) {
+      req.session.destroy(function(err) {
+        if(err) {
+          return next(err);
+        } else {
+          res.status(200).json({ message: "Logged out." })
+        }
+      })
+    }
+  })
+
   app.get("/api/current_user", async (req, res, next) => {
     if (req.session && req.session.userId) {
       res.status(200).json({ user: req.session.userId });
