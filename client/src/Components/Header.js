@@ -1,16 +1,52 @@
 import React, { Component } from "react";
-import { Navbar, NavItem } from 'react-materialize';
+import { Navbar, NavItem } from "react-materialize";
+import { connect } from "react-redux";
 
 class Header extends Component {
+  renderContent() {
+    console.log(this.props.auth);
+    switch (this.props.auth) {
+      case null:
+        return (
+          <li>
+            <a href="/auth/google">Login with Google </a>
+          </li>
+        );
+      case {}:
+        return (
+          <li>
+            <a href="/auth/google">Login with Google </a>
+          </li>
+        );
+      default:
+        return [
+          <li key="2">
+            <a href="/dashboard">Dashboard</a>
+          </li>,
+          <li key="3">
+            <a href="/api/logout">Logout</a>
+          </li>
+        ];
+    }
+  }
+
   render() {
     return (
-      <Navbar brand="logo" right>
-        <NavItem onClick={() => console.log("test click")}>
-          Getting started
-        </NavItem>
-      </Navbar>
+      <nav className="red lighten-2">
+        <div className="nav-wrapper">
+          <a href={"/"} className="left brand-logo">
+            Sanskriti School of Dance
+          </a>
+          <ul className="right">{this.renderContent()}</ul>
+        </div>
+      </nav>
     );
   }
 }
 
-export default Header;
+function mapStateToProps({ auth }) {
+  console.log({ auth });
+  return { auth };
+}
+
+export default connect(mapStateToProps)(Header);

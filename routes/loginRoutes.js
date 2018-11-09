@@ -62,9 +62,7 @@ module.exports = app => {
 
   app.get("/api/current_user", async (req, res, next) => {
     if (req.session && req.session.userId) {
-      res.status(200).json({ user: req.session.userId });
-    } else {
-      res.status(400).json({ });
+      res.send({ user: req.session.userId });
     }
   });
 };
